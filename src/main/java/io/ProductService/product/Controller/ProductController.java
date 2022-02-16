@@ -5,6 +5,8 @@ package io.ProductService.product.Controller;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.validation.Valid;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.ProductService.product.dto.Product;
 import io.ProductService.product.service.ProductService;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 
 @RestController
 @RequestMapping("/v1")
@@ -32,7 +35,7 @@ public class ProductController {
 		this.productService=productService;
 	}
 	@PostMapping("/addProduct")
-	ResponseEntity<Product> addProduct(@RequestBody Product product){
+	ResponseEntity<Product> addProduct(@RequestBody @Valid Product product){
 		String status=productService.addProduct(product);
 		logger.info("Product added status-{}",status);
 		return ResponseEntity.status(HttpStatus.CREATED).body(product);
@@ -49,7 +52,7 @@ public List<Product> productCategoryList(@PathVariable String category){
 }
 
 @GetMapping("/product/{id}")
-Product productById(@PathVariable Integer id){
+Product productById(@PathVariable String id){
 	return productService.productById(id);
 }
 
@@ -58,7 +61,7 @@ String updateProduct(@RequestBody Product product) {
 	return productService.updateProduct(product);
 }
 @DeleteMapping("/product/{id}")
-String deleteProductById(@PathVariable Integer id) {
+String deleteProductById(@PathVariable String id) {
 	return productService.deleteProductById(id);
 }
 }

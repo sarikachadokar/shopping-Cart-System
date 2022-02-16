@@ -2,4 +2,39 @@ Server:
     port:9091
 spring:
     application:
-name: Product Microservice
+          name: Product Microservice
+
+data:
+  mongodb:
+      host: localhost
+      port: 27017
+      database: shopping
+
+profiles:
+      active: local
+boot: 
+ admin: 
+  client:
+  url:  
+      - http://localhost:8081
+
+#actuator spefication
+
+management:
+ endpoint :
+   web:
+     exposure:
+       include:
+            - '*'   
+endpoint:
+     health:
+        show-details: ALWAYS
+health: 
+    mongo:
+      enabled: true
+
+info:
+  app:
+      name: Product Microservice
+      version: 1.0
+      description: Add and retrieve product information

@@ -2,11 +2,18 @@ package io.ProductService.product.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+
+
 import io.ProductService.product.dto.Product;
+import io.ProductService.product.repository.ProductRepository;
+
+
+
 
 @Service
 public class ProductService {
@@ -19,11 +26,15 @@ public class ProductService {
 	}
 
 	public String addProduct(Product product) {
+	if(product.getPrice()== 0 && product.getDiscount()>0) {
+		throw new OfferNotValidException("no discount allowed at 0 product price");
+	}
+		//Logger.info("adding product");
 		productRepository.save(product);
-
 		return "success";
 
 	}
+	
 
 	public List<Product> listAllProduct() {
 		return productRepository.findAll();
@@ -35,7 +46,7 @@ public class ProductService {
 		return productRepository.findByCategory(category);
 	}
 
-	public Product productById(Integer id) {
+	public Product productById(String id) {
 		return productRepository.findById(id).get();
 
 	}
@@ -47,8 +58,9 @@ public class ProductService {
 		return "Successfully!! updated the product";
 	}
 
-	public String deleteProductById(Integer id) {
+	public String deleteProductById(String id) {
 		productRepository.deleteById(id);
-		return "product deleted";
+		return "products deleted";
+		
 	}
 }
